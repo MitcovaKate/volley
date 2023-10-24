@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <style>
+   body{
+    background-color: #333;
+   }
+    #cort{
+    background-color: cornflowerblue;
+    border-top: 5px double white;
+    border-bottom: 1px solid white;
+    position: relative;
+   }
+   #ball{
+background: radial-gradient(white,lime);
+border-radius: 100%;
+position: absolute;
+   }
+   #player{
+    background-color: orangered;
+    position: absolute;
+
+   }
+   #scoreDisplay{
+            color: darkred;
+            font-size: large;
+        margin:70px 40px;
+background-color: greenyellow;
+        width: 400px;
+        height: 30px;
+        border: 1px solid black;
+    text-align: center;
+}
+</style>
+    <title>Volley</title>
+</head>
+<body onkeydown="onKeybord()">
+    <div id="cort">
+        <div id="ball"></div>
+        <div id="player"></div>
+    </div>
+    <div id="scoreDisplay"></div>
+    <script>
+        const C_Width=500
+        const C_Height=500
+        const B_Width=50
+        const B_Height=50
+        const P_Width=100
+        const P_Height=50
+        let bLeft=0
+        let pBottom=0
+        let pLeft=200
+        let bBottom=0
+        let pballInHands=true
+        let bSpeedV=0
+        let bSpeedH=0
+        let timerId=null
+        let score=0
+         bLeft=P_Width / 2 - B_Width /2 + pLeft
+        cort.style=`width:${C_Width}px;
+                    height:${C_Height}px;`
+
+
+        function updateBallStyles(){
+         ball.style=`width:${B_Width}px;
+                    height:${B_Height}px;
+                    bottom:${bBottom}px;
+                    left:${bLeft}px;`
+            }
+        function updatePlayerStyle(){
+         player.style=`width:${P_Width}px;
+                    height:${P_Height}px;
+                    bottom:${pBottom - P_Height - 1}px;
+                    left:${pLeft}px;`}
+        updatePlayerStyle()
+        updateBallStyles()
+
+         function restart(){ bLeft=C_Width / 2 - B_Width / 2
+            player.style=`width:${P_Width}px;
+                    height:${P_Height}px;
+                    bottom:${pBottom - P_Height - 1}px;
+                    left:200px;`
+           }
+       function throwBall(){
+        pballInHands=false
+        bSpeedH=Math.random()* 6 - 3 
+        bSpeedV=10
+             timerId=setInterval(moveBall,100)
+
+}  
+ function moveBall(){
+            bLeft+=bSpeedH
+            bBottom+=bSpeedV
+            if(bBottom>C_Height-B_Height){
+                bSpeedV=-10
+                bSpeedH=Math.random()*10-5
+            }
+            if(bBottom<=0){
+              clearInterval(timerId)
+              if(bLeft>P_Width / 2 - B_Width  + pLeft&&bLeft<P_Width   + pLeft){
+         score+=1 
+           }
+          else {
+            score-=1
+           }
+           scoreDisplay.innerHTML = score 
+          
+          restart()
+           
+        } 
+  
+        updateBallStyles()
+        } 
+      
+        function onKeybord(){
+//            if(event.code=='ArrowLeft') {
+//             if(pLeft>0){ 
+//                 pLeft-=10
+//             }
+//             updatePlayerStyle()
+//            }
+           
+//            else if(event.code=='ArrowRight'){
+//             if(pLeft<C_Width-P_Width){ 
+//                 pLeft+=10
+//             }
+//             updatePlayerStyle()
+//            }
+//            else if(event.code=='Space'){
+// alert("throw")
+//            }  
+
+switch (event.code) {
+  case 'ArrowLeft':
+  if(pLeft>0){ 
+    pLeft-=10 
+ }
+   
+    break;
+  case 'ArrowRight':
+  if(pLeft<C_Width-P_Width){ 
+     pLeft+=10
+            }
+  
+    break;
+  case 'Space':
+   
+  throwBall();
+    break;
+  }   
+  if(pballInHands){ 
+  bLeft=P_Width / 2 - B_Width / 2 + pLeft
+    }
+  updateBallStyles()
+  updatePlayerStyle()
+}                       
+    </script>
+</body>
+</html>
